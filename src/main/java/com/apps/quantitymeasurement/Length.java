@@ -1,14 +1,17 @@
 package com.apps.quantitymeasurement;
 
+import java.util.Objects;
+
 public class Length {
 
-    private final double value;
-    private final LengthUnit unit;
+    private double value;
+    private LengthUnit unit;
 
     public enum LengthUnit {
-
         FEET(12.0),
-        INCHES(1.0);
+        INCHES(1.0),
+        YARDS(36.0),
+        CENTIMETERS(0.393701);
 
         private final double conversionFactor;
 
@@ -29,36 +32,38 @@ public class Length {
         this.unit = unit;
     }
 
-    private double convertToBaseUnit() {
+    public double getValue() {
+        return value;
+    }
+
+    public LengthUnit getUnit() {
+        return unit;
+    }
+
+    private double toInches() {
         return this.value * this.unit.getConversionFactor();
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object obj) {
 
-        if (this == o)
+        if (this == obj)
             return true;
 
-        if (!(o instanceof Length))
+        if (obj == null || getClass() != obj.getClass())
             return false;
 
-        Length that = (Length) o;
+        Length other = (Length) obj;
 
-        return Double.compare(
-                this.convertToBaseUnit(),
-                that.convertToBaseUnit()
-        ) == 0;
+        double thisInches = this.toInches();
+        double otherInches = other.toInches();
+
+        // Tolerance comparison for floating point
+        return Math.abs(thisInches - otherInches) < 0.0001;
     }
 
     @Override
     public int hashCode() {
-        return Double.hashCode(convertToBaseUnit());
-    }
-
-    public static void main(String[] args) {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
-
-        System.out.println("Are lengths equal ? " + l1.equals(l2));
+        return Objects.hash(toInches());
     }
 }
