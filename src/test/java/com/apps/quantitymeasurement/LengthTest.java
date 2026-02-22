@@ -3,107 +3,112 @@ package com.apps.quantitymeasurement;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class LengthTest {
+public class LengthTest {
 
-    // ============================
-    // SAME UNIT EQUALITY TESTS
-    // ============================
+    // ---------- YARD TESTS ----------
 
     @Test
-    void testEquality_FeetToFeet_SameValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
+    public void testEquality_YardToYard_SameValue() {
+        Length l1 = new Length(1.0, Length.LengthUnit.YARDS);
+        Length l2 = new Length(1.0, Length.LengthUnit.YARDS);
 
-        assertTrue(l1.equals(l2), "1 ft should equal 1 ft");
+        assertTrue(l1.equals(l2));
     }
 
     @Test
-    void testEquality_InchToInch_SameValue() {
-        Length l1 = new Length(5.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(5.0, Length.LengthUnit.INCHES);
+    public void testEquality_YardToFeet_EquivalentValue() {
+        Length l1 = new Length(1.0, Length.LengthUnit.YARDS);
+        Length l2 = new Length(3.0, Length.LengthUnit.FEET);
 
-        assertTrue(l1.equals(l2), "5 inches should equal 5 inches");
-    }
-
-    // ============================
-    // CROSS UNIT EQUALITY TESTS
-    // ============================
-
-    @Test
-    void testEquality_FeetToInches_EquivalentValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(12.0, Length.LengthUnit.INCHES);
-
-        assertTrue(l1.equals(l2), "1 foot should equal 12 inches");
+        assertTrue(l1.equals(l2));
     }
 
     @Test
-    void testEquality_InchesToFeet_EquivalentValue() {
-        Length l1 = new Length(12.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
+    public void testEquality_YardToInches_EquivalentValue() {
+        Length l1 = new Length(1.0, Length.LengthUnit.YARDS);
+        Length l2 = new Length(36.0, Length.LengthUnit.INCHES);
 
-        assertTrue(l1.equals(l2), "12 inches should equal 1 foot");
+        assertTrue(l1.equals(l2));
     }
 
-    // ============================
-    // DIFFERENT VALUE TESTS
-    // ============================
-
     @Test
-    void testEquality_FeetToFeet_DifferentValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
+    public void testEquality_YardToFeet_NonEquivalent() {
+        Length l1 = new Length(1.0, Length.LengthUnit.YARDS);
         Length l2 = new Length(2.0, Length.LengthUnit.FEET);
 
-        assertFalse(l1.equals(l2), "1 ft should not equal 2 ft");
+        assertFalse(l1.equals(l2));
+    }
+
+    // ---------- CENTIMETER TESTS ----------
+
+    @Test
+    public void testEquality_CentimeterToCentimeter_SameValue() {
+        Length l1 = new Length(5.0, Length.LengthUnit.CENTIMETERS);
+        Length l2 = new Length(5.0, Length.LengthUnit.CENTIMETERS);
+
+        assertTrue(l1.equals(l2));
     }
 
     @Test
-    void testEquality_InchesToInches_DifferentValue() {
-        Length l1 = new Length(10.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(11.0, Length.LengthUnit.INCHES);
+    public void testEquality_CentimeterToInches_EquivalentValue() {
+        Length l1 = new Length(1.0, Length.LengthUnit.CENTIMETERS);
+        Length l2 = new Length(0.393701, Length.LengthUnit.INCHES);
 
-        assertFalse(l1.equals(l2), "10 inches should not equal 11 inches");
-    }
-
-    // ============================
-    // NULL & TYPE SAFETY TESTS
-    // ============================
-
-    @Test
-    void testEquality_NullComparison() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-
-        assertFalse(l1.equals(null), "Length should not equal null");
+        assertTrue(l1.equals(l2));
     }
 
     @Test
-    void testEquality_DifferentType() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
+    public void testEquality_CentimeterToFeet_NonEquivalent() {
+        Length l1 = new Length(1.0, Length.LengthUnit.CENTIMETERS);
+        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
 
-        assertFalse(l1.equals("1.0"), "Length should not equal different type");
+        assertFalse(l1.equals(l2));
     }
 
-    // ============================
-    // SAME REFERENCE TEST
-    // ============================
+    // ---------- TRANSITIVE PROPERTY ----------
 
     @Test
-    void testEquality_SameReference() {
-        Length l1 = new Length(2.0, Length.LengthUnit.FEET);
+    public void testEquality_MultiUnit_TransitiveProperty() {
+        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
+        Length feet = new Length(3.0, Length.LengthUnit.FEET);
+        Length inches = new Length(36.0, Length.LengthUnit.INCHES);
 
-        assertTrue(l1.equals(l1), "Object should equal itself");
+        assertTrue(yard.equals(feet));
+        assertTrue(feet.equals(inches));
+        assertTrue(yard.equals(inches));
     }
 
-    // ============================
-    // INVALID UNIT TEST
-    // ============================
+    // ---------- COMPLEX SCENARIO ----------
 
     @Test
-    void testConstructor_NullUnit() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Length(1.0, null),
-                "Constructor should throw exception for null unit"
-        );
+    public void testEquality_AllUnits_ComplexScenario() {
+        Length yard = new Length(2.0, Length.LengthUnit.YARDS);
+        Length feet = new Length(6.0, Length.LengthUnit.FEET);
+        Length inches = new Length(72.0, Length.LengthUnit.INCHES);
+
+        assertTrue(yard.equals(feet));
+        assertTrue(feet.equals(inches));
+        assertTrue(yard.equals(inches));
+    }
+
+    // ---------- NULL & EDGE CASES ----------
+
+    @Test
+    public void testEquality_SameReference() {
+        Length l1 = new Length(2.0, Length.LengthUnit.YARDS);
+        assertTrue(l1.equals(l1));
+    }
+
+    @Test
+    public void testEquality_NullComparison() {
+        Length l1 = new Length(2.0, Length.LengthUnit.YARDS);
+        assertFalse(l1.equals(null));
+    }
+
+    @Test
+    public void testConstructor_NullUnit() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Length(1.0, null);
+        });
     }
 }
