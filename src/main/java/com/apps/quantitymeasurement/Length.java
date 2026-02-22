@@ -1,12 +1,13 @@
 package com.apps.quantitymeasurement;
 
-import java.util.Objects;
-
 public class Length {
 
-    private double value;
-    private LengthUnit unit;
+    private final double value;
+    private final LengthUnit unit;
 
+    private static final double EPSILON = 0.00001;
+
+    // Enum with conversion factors (base unit = INCHES)
     public enum LengthUnit {
         FEET(12.0),
         INCHES(1.0),
@@ -24,9 +25,13 @@ public class Length {
         }
     }
 
+    // Constructor with validation
     public Length(double value, LengthUnit unit) {
         if (unit == null) {
             throw new IllegalArgumentException("Unit cannot be null");
+        }
+        if (!Double.isFinite(value)) {
+            throw new IllegalArgumentException("Value must be finite");
         }
         this.value = value;
         this.unit = unit;
@@ -40,30 +45,39 @@ public class Length {
         return unit;
     }
 
-    private double toInches() {
-        return this.value * this.unit.getConversionFactor();
+    // Convert to base unit (inches)
+    private double toBaseUnit() {
+        return value * unit.getConversionFactor();
     }
 
+    // Convert to another unit (instance method)
+    public Length convertTo(LengthUnit targetUnit) {
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+
+        double baseValue = this.toBaseUnit();
+        double convertedValue = baseValue / targetUnit.getConversionFactor();
+
+        return new Length(convertedValue, targetUnit);
+    }
+
+    // Equality check (with tolerance)
     @Override
     public boolean equals(Object obj) {
 
-        if (this == obj)
-            return true;
-
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
         Length other = (Length) obj;
 
-        double thisInches = this.toInches();
-        double otherInches = other.toInches();
-
-        // Tolerance comparison for floating point
-        return Math.abs(thisInches - otherInches) < 0.0001;
+        return Math.abs(this.toBaseUnit() - other.toBaseUnit()) < EPSILON;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(toInches());
+    public String toString() {
+        return String.format("%.2f %s", value, unit);
     }
+
+	
 }
