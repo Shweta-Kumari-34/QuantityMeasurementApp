@@ -4,42 +4,41 @@ import com.apps.quantitymeasurement.Length.LengthUnit;
 
 public class QuantityMeasurementApp {
 
-    // Generic method to demonstrate Length equality check
-    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
-        return l1.equals(l2);
+    public static void demonstrateLengthConversion(
+            double value,
+            LengthUnit from,
+            LengthUnit to) {
+
+       // double result = Length.convert(value, from, to);
+    	Length length = new Length(value, from);
+    	Length converted = length.convertTo(to);
+    	double result = converted.getValue();
+
+        System.out.println("Converted: " + value + " " + from +
+                " → " + result + " " + to);
     }
 
-    // Demonstrate Feet equality using Length class
-    public static void demonstrateFeetEquality() {
+    // Method Overloading
+    public static void demonstrateLengthConversion(
+            Length length,
+            LengthUnit to) {
 
-        Length feet1 = new Length(5.0, LengthUnit.FEET);
-        Length feet2 = new Length(5.0, LengthUnit.FEET);
+        Length converted = length.convertTo(to);
 
-        System.out.println("Feet Equality : " + feet1.equals(feet2));
+        System.out.println("Converted: " + length +
+                " → " + converted);
     }
 
-    // Demonstrate Inches equality using Length class
-    public static void demonstrateInchesEquality() {
-
-        Length inch1 = new Length(1.0, LengthUnit.INCHES);
-        Length inch2 = new Length(1.0, LengthUnit.INCHES);
-
-        System.out.println("Inch Equality : " + inch1.equals(inch2));
-    }
-
-    // Demonstrate Feet and Inches comparison
-    public static void demonstrateFeetInchesComparison() {
-
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
-
-        System.out.println("Feet-Inches Equality -> " + l1.equals(l2));
+    public static void demonstrateLengthEquality(Length l1, Length l2) {
+        System.out.println("Are equal? " + l1.equals(l2));
     }
 
     public static void main(String[] args) {
 
-        demonstrateFeetEquality();
-        demonstrateInchesEquality();
-        demonstrateFeetInchesComparison();
+        demonstrateLengthConversion(1.0, LengthUnit.FEET, LengthUnit.INCHES);
+        demonstrateLengthConversion(3.0, LengthUnit.YARDS, LengthUnit.FEET);
+
+        Length length = new Length(2.0, LengthUnit.YARDS);
+        demonstrateLengthConversion(length, LengthUnit.INCHES);
     }
 }
