@@ -1,54 +1,45 @@
 package com.apps.quantitymeasurement;
 
-import java.util.Scanner;
+import com.apps.quantitymeasurement.Length.LengthUnit;
 
 public class QuantityMeasurementApp {
 
-    // --------Feet Equality --------
-    public static boolean compareFeet(double value1, double value2) {
-        Feet feet1 = new Feet(value1);
-        Feet feet2 = new Feet(value2);
-        return feet1.equals(feet2);
+    // Generic method to demonstrate Length equality check
+    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
+        return l1.equals(l2);
     }
 
-    // -------- Inches Equality --------
-    public static boolean compareInches(double value1, double value2) {
-        Inches inch1 = new Inches(value1);
-        Inches inch2 = new Inches(value2);
-        return inch1.equals(inch2);
+    // Demonstrate Feet equality using Length class
+    public static void demonstrateFeetEquality() {
+
+        Length feet1 = new Length(5.0, LengthUnit.FEET);
+        Length feet2 = new Length(5.0, LengthUnit.FEET);
+
+        System.out.println("Feet Equality : " + feet1.equals(feet2));
+    }
+
+    // Demonstrate Inches equality using Length class
+    public static void demonstrateInchesEquality() {
+
+        Length inch1 = new Length(1.0, LengthUnit.INCHES);
+        Length inch2 = new Length(1.0, LengthUnit.INCHES);
+
+        System.out.println("Inch Equality : " + inch1.equals(inch2));
+    }
+
+    // Demonstrate Feet and Inches comparison
+    public static void demonstrateFeetInchesComparison() {
+
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(12.0, LengthUnit.INCHES);
+
+        System.out.println("Feet-Inches Equality -> " + l1.equals(l2));
     }
 
     public static void main(String[] args) {
 
-        Scanner input = new Scanner(System.in);
-
-        try {
-            // -------- FEET INPUT --------
-            System.out.print("Enter first value in feet: ");
-            double feetFirst = Double.parseDouble(input.nextLine());
-
-            System.out.print("Enter second value in feet: ");
-            double feetSecond = Double.parseDouble(input.nextLine());
-
-            boolean feetResult = compareFeet(feetFirst, feetSecond);
-            System.out.println("Feet Equal (" + feetResult + ")");
-
-            System.out.println("----------------------------------");
-
-            // -------- INCH INPUT --------
-            System.out.print("Enter first value in inches: ");
-            double inchFirst = Double.parseDouble(input.nextLine());
-
-            System.out.print("Enter second value in inches: ");
-            double inchSecond = Double.parseDouble(input.nextLine());
-
-            boolean inchResult = compareInches(inchFirst, inchSecond);
-            System.out.println("Inches Equal (" + inchResult + ")");
-
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input! Please enter numeric values only.");
-        }
-
-        input.close();
+        demonstrateFeetEquality();
+        demonstrateInchesEquality();
+        demonstrateFeetInchesComparison();
     }
 }
