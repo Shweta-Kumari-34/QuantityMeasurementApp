@@ -130,7 +130,7 @@ public class Length {
 		Length l4 = new Length(36, LengthUnit.INCHES);
 		System.out.println("Are lengths equal? " + l3.equals(l4));
 
-		Length l5 = new Length(100, LengthUnit.CENTIMETERS);
+		Length l5 = new Length(100, LengthUnit.CENTIMETER);
 		Length l6 = new Length(39.3701, LengthUnit.INCHES);
 		System.out.println("Are lengths equal? " + l5.equals(l6));
 

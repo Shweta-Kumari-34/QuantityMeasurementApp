@@ -1,11 +1,10 @@
 package com.apps.quantitymeasurement;
 
 public enum LengthUnit implements IMeasurable {
-
-    INCHES(1.0),
-    FEET(12.0),
-    YARDS(36.0),
-    CENTIMETERS(0.393701);
+    FEET(12.0), 
+    INCHES(1.0), 
+    YARDS(36.0), 
+    CENTIMETER(0.4); // 1 inch = 2.5 cm => 1 cm = 1/2.5 = 0.4 inches
 
     private final double factor;
 
@@ -15,7 +14,7 @@ public enum LengthUnit implements IMeasurable {
 
     @Override
     public double convertToBase(double value) {
-        return value * factor;
+        return value * factor; // Sab inches mein convert hoga
     }
 
     @Override
