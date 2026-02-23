@@ -4,54 +4,55 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuantityMeasurementTest {
-    private static final double EPSILON = 0.02;
 
-    // --- UC4: Equality (Including Centimeter) ---
+    // UC13: Centralized Logic Verification (DRY Principle)
     @Test
-    void givenTwoInchesAndFiveCentimeters_WhenCompared_ShouldReturnEqual() {
-        // 2 inches = 5 cm (as per 1 inch = 2.5 cm)
+    void givenRefactoredLogic_ShouldPerformAdditionCorrectly() {
+        Quantity<LengthUnit> oneFeet = new Quantity<>(1.0, LengthUnit.FEET);
         Quantity<LengthUnit> twoInches = new Quantity<>(2.0, LengthUnit.INCHES);
-        Quantity<LengthUnit> fiveCm = new Quantity<>(5.0, LengthUnit.CENTIMETER);
-        assertEquals(twoInches, fiveCm); // UC4 logic
+        Quantity<LengthUnit> result = oneFeet.add(twoInches, LengthUnit.INCHES);
+        assertEquals(14.0, result.getValue()); // 12 + 2
     }
 
-    // --- UC10: Addition (With Centimeter) ---
+    // UC12 & UC13: Subtraction & Non-Commutativity
     @Test
-    void givenOneInchAndOneCm_WhenAdded_ShouldReturnCorrectValueInCm() {
-        Quantity<LengthUnit> oneInch = new Quantity<>(1.0, LengthUnit.INCHES);
-        Quantity<LengthUnit> oneCm = new Quantity<>(1.0, LengthUnit.CENTIMETER);
-        // Result: 2.5cm + 1cm = 3.5cm
-        Quantity<LengthUnit> result = oneInch.add(oneCm, LengthUnit.CENTIMETER); 
-        assertEquals(3.5, result.getValue(), EPSILON);
-    }
-
-    // --- UC12: Subtraction ---
-    @Test
-    void givenTenFeetAndSixInches_WhenSubtracted_ShouldReturnCorrectValueInFeet() {
+    void givenTenFeetAndSixInches_WhenSubtracted_ShouldReturnCorrectValue() {
         Quantity<LengthUnit> tenFeet = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> sixInches = new Quantity<>(6.0, LengthUnit.INCHES);
-        // 10ft - 0.5ft = 9.5ft
-        Quantity<LengthUnit> result = tenFeet.subtract(sixInches); 
-        assertEquals(9.5, result.getValue(), EPSILON);
+        assertEquals(9.5, tenFeet.subtract(sixInches).getValue());
     }
 
-    // --- UC12: Division ---
+    // UC12 & UC13: Division (Dimensionless Scalar)
     @Test
-    void givenTwentyFourInchesAndTwoFeet_WhenDivided_ShouldReturnRatioOne() {
+    void givenTwentyFourInchesAndTwoFeet_WhenDivided_ShouldReturnOne() {
         Quantity<LengthUnit> inches = new Quantity<>(24.0, LengthUnit.INCHES);
         Quantity<LengthUnit> feet = new Quantity<>(2.0, LengthUnit.FEET);
-        // Result is a scalar ratio (double)
-        double ratio = inches.divide(feet); 
-        assertEquals(1.0, ratio, EPSILON);
+        assertEquals(1.0, inches.divide(feet));
     }
-   
-   
-    // --- Error Handling ---
+
+    // Centimeter Integration Test
     @Test
-    void givenLengthAndWeight_WhenSubtracted_ShouldThrowException() {
+    void givenTwoInchesAndFiveCm_WhenCompared_ShouldBeEqual() {
+        Quantity<LengthUnit> twoInches = new Quantity<>(2.0, LengthUnit.INCHES);
+        Quantity<LengthUnit> fiveCm = new Quantity<>(5.0, LengthUnit.CENTIMETER);
+        assertEquals(twoInches, fiveCm);
+    }
+
+    // Error Handling Consistency (DRY Validation)
+    @Test
+    void givenCrossCategoryOperands_ShouldThrowExceptionForAllOperations() {
         Quantity<LengthUnit> feet = new Quantity<>(1.0, LengthUnit.FEET);
-        Quantity<WeightUnit> weight = new Quantity<>(1.0, WeightUnit.KILOGRAM);
-        // Bypassing compile-time check to verify runtime validation
-        assertThrows(IllegalArgumentException.class, () -> ((Quantity)feet).subtract(weight));
+        Quantity<WeightUnit> kg = new Quantity<>(1.0, WeightUnit.KILOGRAM);
+        
+        assertThrows(IllegalArgumentException.class, () -> ((Quantity)feet).add(kg));
+        assertThrows(IllegalArgumentException.class, () -> ((Quantity)feet).subtract(kg));
+        assertThrows(IllegalArgumentException.class, () -> ((Quantity)feet).divide(kg));
+    }
+
+    @Test
+    void givenDivisionByZero_ShouldThrowArithmeticException() {
+        Quantity<LengthUnit> tenFeet = new Quantity<>(10.0, LengthUnit.FEET);
+        Quantity<LengthUnit> zeroFeet = new Quantity<>(0.0, LengthUnit.FEET);
+        assertThrows(ArithmeticException.class, () -> tenFeet.divide(zeroFeet));
     }
 }

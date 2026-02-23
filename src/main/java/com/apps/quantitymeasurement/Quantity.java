@@ -1,59 +1,77 @@
 package com.apps.quantitymeasurement;
 
+import java.util.function.DoubleBinaryOperator;
+
 public class Quantity<U extends IMeasurable> {
     private final double value;
     private final U unit;
-    private static final double EPSILON = 0.02; // CM ke liye thoda margin
+    private static final double EPSILON = 0.02;
+
+    // UC13: Step 1 - Define Arithmetic Operations using Lambda
+    private enum ArithmeticOperation {
+        ADD((a, b) -> a + b),
+        SUBTRACT((a, b) -> a - b),
+        DIVIDE((a, b) -> a / b);
+
+        private final DoubleBinaryOperator operator;
+        ArithmeticOperation(DoubleBinaryOperator operator) { this.operator = operator; }
+        public double compute(double v1, double v2) { return operator.applyAsDouble(v1, v2); }
+    }
 
     public Quantity(double value, U unit) {
-        if (unit == null) throw new IllegalArgumentException("Unit null hai");
+        if (unit == null) throw new IllegalArgumentException("Unit cannot be null");
         this.value = value;
         this.unit = unit;
     }
 
     public double getValue() { return value; }
 
-    public Quantity<U> convertTo(U targetUnit) {
-        double baseValue = this.unit.convertToBase(this.value);
-        double converted = targetUnit.convertFromBase(baseValue);
-        return new Quantity<>(Math.round(converted * 100.0) / 100.0, targetUnit);
+    // UC13: Step 2 & 3 - Centralized Private Helper Method (DRY)
+    private double performArithmetic(Quantity<U> other, ArithmeticOperation op) {
+        if (other == null) throw new IllegalArgumentException("Operand cannot be null");
+        if (!this.unit.getCategory().equals(other.unit.getCategory())) 
+            throw new IllegalArgumentException("Cross-category operations not allowed");
+        
+        double base1 = this.unit.convertToBase(this.value);
+        double base2 = other.unit.convertToBase(other.value);
+        
+        if (op == ArithmeticOperation.DIVIDE && base2 == 0) 
+            throw new ArithmeticException("Division by zero");
+            
+        return op.compute(base1, base2);
     }
 
+    // UC13: Step 4 - Refactored Public API (Addition)
+    public Quantity<U> add(Quantity<U> other) { return add(other, this.unit); }
     public Quantity<U> add(Quantity<U> other, U targetUnit) {
-        validate(other);
-        double sum = this.unit.convertToBase(this.value) + other.unit.convertToBase(other.value);
-        return new Quantity<>(Math.round(targetUnit.convertFromBase(sum) * 100.0) / 100.0, targetUnit);
+        double resultBase = performArithmetic(other, ArithmeticOperation.ADD);
+        return new Quantity<>(round(targetUnit.convertFromBase(resultBase)), targetUnit);
     }
 
-    public Quantity<U> subtract(Quantity<U> other) {
-        validate(other);
-        double diff = this.unit.convertToBase(this.value) - other.unit.convertToBase(other.value);
-        // Default subtract returns result in same unit
-        return new Quantity<>(Math.round(this.unit.convertFromBase(diff) * 100.0) / 100.0, this.unit);
+    // UC13: Refactored Subtraction
+    public Quantity<U> subtract(Quantity<U> other) { return subtract(other, this.unit); }
+    public Quantity<U> subtract(Quantity<U> other, U targetUnit) {
+        double resultBase = performArithmetic(other, ArithmeticOperation.SUBTRACT);
+        return new Quantity<>(round(targetUnit.convertFromBase(resultBase)), targetUnit);
     }
- // UC12: Division (Returns double, not Quantity)
+
+    // UC13: Refactored Division
     public double divide(Quantity<U> other) {
-        validate(other); // Category check
-        if (other.value == 0) {
-            throw new ArithmeticException("Zero se divide nahi kar sakte");
-        }
-        
-        // Convert both to base and get the ratio
-        double thisBase = this.unit.convertToBase(this.value);
-        double otherBase = other.unit.convertToBase(other.value);
-        
-        return thisBase / otherBase; // Ye ek simple number (ratio) hai
+        return performArithmetic(other, ArithmeticOperation.DIVIDE);
     }
-    private void validate(Quantity<U> other) {
-        if (other == null || !this.unit.getCategory().equals(other.unit.getCategory()))
-            throw new IllegalArgumentException("Category mismatch");
+
+    // UC5: Conversion
+    public Quantity<U> convertTo(U targetUnit) {
+        double base = this.unit.convertToBase(this.value);
+        return new Quantity<>(round(targetUnit.convertFromBase(base)), targetUnit);
     }
+
+    private double round(double v) { return Math.round(v * 100.0) / 100.0; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Quantity)) return false;
-        Quantity<?> that = (Quantity<?>) o;
+        if (!(o instanceof Quantity<?> that)) return false;
         if (!this.unit.getCategory().equals(that.unit.getCategory())) return false;
         return Math.abs(this.unit.convertToBase(this.value) - that.unit.convertToBase(that.value)) < EPSILON;
     }
