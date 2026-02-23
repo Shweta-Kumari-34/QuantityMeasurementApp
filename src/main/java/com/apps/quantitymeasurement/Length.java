@@ -2,33 +2,29 @@ package com.apps.quantitymeasurement;
 
 import java.util.Objects;
 
-public class Length {
+public final class Length {
 
-    public enum LengthUnit {
-        INCHES(1.0),           // Base Unit
-        FEET(12.0),
-        YARDS(36.0),
-        CENTIMETERS(0.393700787); // 1 cm = 0.393700787 inches
-
-        private final double toInchesFactor;
-
-        LengthUnit(double factor) {
-            this.toInchesFactor = factor;
-        }
-
-        public double toBase(double value) {
-            return value * toInchesFactor;
-        }
-
-        public double fromBase(double baseValue) {
-            return baseValue / toInchesFactor;
-        }
-    }
+    private static final double EPSILON = 1e-5;
 
     private final double value;
     private final LengthUnit unit;
 
-    private static final double EPSILON = 0.0001;
+    public enum LengthUnit {
+        FEET(12.0),
+        INCHES(1.0),
+        YARDS(36.0),
+        CENTIMETERS(0.393701);
+
+        private final double conversionFactor; // relative to inches (base)
+
+        LengthUnit(double conversionFactor) {
+            this.conversionFactor = conversionFactor;
+        }
+
+        public double getConversionFactor() {
+            return conversionFactor;
+        }
+    }
 
     public Length(double value, LengthUnit unit) {
         if (unit == null) {
@@ -49,55 +45,64 @@ public class Length {
         return unit;
     }
 
-    // Convert to another unit
+    // Convert to base unit (inches)
+    private double toBaseUnit() {
+        return value * unit.getConversionFactor();
+    }
+
+    // Convert from base (inches) to target unit
+    private static double fromBaseUnit(double baseValue, LengthUnit targetUnit) {
+        return baseValue / targetUnit.getConversionFactor();
+    }
+
+    // UC6 – implicit target (first operand's unit)
+    public Length add(Length that) {
+        return add(that, this.unit);
+    }
+
+    // UC7 – explicit target unit
+    public Length add(Length that, LengthUnit targetUnit) {
+
+        if (that == null) {
+            throw new IllegalArgumentException("Operand cannot be null");
+        }
+
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+
+        double sumInBase = this.toBaseUnit() + that.toBaseUnit();
+        double resultValue = fromBaseUnit(sumInBase, targetUnit);
+
+        return new Length(resultValue, targetUnit);
+    }
+
+    // Convert to specific unit
     public Length convertTo(LengthUnit targetUnit) {
         if (targetUnit == null) {
             throw new IllegalArgumentException("Target unit cannot be null");
         }
-        double baseValue = unit.toBase(this.value);
-        double converted = targetUnit.fromBase(baseValue);
+        double base = this.toBaseUnit();
+        double converted = fromBaseUnit(base, targetUnit);
         return new Length(converted, targetUnit);
     }
 
-    // UC6: Add two lengths
-    public Length add(Length other) {
-        if (other == null) {
-            throw new IllegalArgumentException("Second operand cannot be null");
-        }
-
-        // Convert both to base (inches)
-        double base1 = this.unit.toBase(this.value);
-        double base2 = other.unit.toBase(other.value);
-
-        // Add in base
-        double sumBase = base1 + base2;
-
-        // Convert back to first operand's unit
-        double result = this.unit.fromBase(sumBase);
-
-        return new Length(result, this.unit);
-    }
-
-    // Compare for equality with epsilon
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Length)) return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Length)) return false;
+        Length that = (Length) o;
 
-        Length other = (Length) obj;
-
-        double base1 = this.unit.toBase(this.value);
-        double base2 = other.unit.toBase(other.value);
-
-        return Math.abs(base1 - base2) < EPSILON;
+        return Math.abs(this.toBaseUnit() - that.toBaseUnit()) < EPSILON;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(unit.toBase(value));
+        return Objects.hash(Math.round(this.toBaseUnit() / EPSILON));
     }
 
     @Override
     public String toString() {
-        return "Quantity(" + value + ", " + unit + ")";
+        return String.format("%.5f %s", value, unit);
     }
 }
