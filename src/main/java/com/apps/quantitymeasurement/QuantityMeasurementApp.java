@@ -3,7 +3,7 @@ package com.apps.quantitymeasurement;
 public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
-        System.out.println("=== Quantity Measurement App (UC1 - UC12) ===");
+        System.out.println("=== Quantity Measurement App  ===");
 
         // Length Subtraction
         Quantity<LengthUnit> tenFeet = new Quantity<>(10.0, LengthUnit.FEET);

@@ -7,60 +7,59 @@ public class Quantity<U extends IMeasurable> {
     private final U unit;
     private static final double EPSILON = 0.02;
 
-    // UC13: Step 1 - Define Arithmetic Operations using Lambda
+    // UC13: Step 1 - Define Operations
     private enum ArithmeticOperation {
-        ADD((a, b) -> a + b),
-        SUBTRACT((a, b) -> a - b),
-        DIVIDE((a, b) -> a / b);
-
-        private final DoubleBinaryOperator operator;
-        ArithmeticOperation(DoubleBinaryOperator operator) { this.operator = operator; }
-        public double compute(double v1, double v2) { return operator.applyAsDouble(v1, v2); }
+        ADD((a, b) -> a + b), SUBTRACT((a, b) -> a - b), DIVIDE((a, b) -> a / b);
+        private final DoubleBinaryOperator op;
+        ArithmeticOperation(DoubleBinaryOperator op) { this.op = op; }
+        public double compute(double v1, double v2) { return op.applyAsDouble(v1, v2); }
     }
 
     public Quantity(double value, U unit) {
-        if (unit == null) throw new IllegalArgumentException("Unit cannot be null");
+        if (unit == null) throw new IllegalArgumentException("Unit null nahi ho sakta");
         this.value = value;
         this.unit = unit;
     }
 
     public double getValue() { return value; }
 
-    // UC13: Step 2 & 3 - Centralized Private Helper Method (DRY)
-    private double performArithmetic(Quantity<U> other, ArithmeticOperation op) {
-        if (other == null) throw new IllegalArgumentException("Operand cannot be null");
-        if (!this.unit.getCategory().equals(other.unit.getCategory())) 
-            throw new IllegalArgumentException("Cross-category operations not allowed");
-        
+    // UC13 & UC14: Centralized Arithmetic Logic
+    private double performArithmetic(Quantity<U> other, ArithmeticOperation operation) {
+        // UC14: Support check (Temperature ke liye exception fekega)
+        this.unit.validateOperationSupport(operation.name());
+
+        if (other == null || !this.unit.getCategory().equals(other.unit.getCategory()))
+            throw new IllegalArgumentException("Category mismatch");
+
         double base1 = this.unit.convertToBase(this.value);
         double base2 = other.unit.convertToBase(other.value);
         
-        if (op == ArithmeticOperation.DIVIDE && base2 == 0) 
-            throw new ArithmeticException("Division by zero");
-            
-        return op.compute(base1, base2);
+        if (operation == ArithmeticOperation.DIVIDE && base2 == 0)
+            throw new ArithmeticException("Zero division");
+
+        return operation.compute(base1, base2);
     }
 
-    // UC13: Step 4 - Refactored Public API (Addition)
-    public Quantity<U> add(Quantity<U> other) { return add(other, this.unit); }
+    // --- Public Methods (Satisfying UC1-UC14) ---
+
+    public Quantity<U> add(Quantity<U> other) {
+        return add(other, this.unit); 
+    }
+
     public Quantity<U> add(Quantity<U> other, U targetUnit) {
-        double resultBase = performArithmetic(other, ArithmeticOperation.ADD);
-        return new Quantity<>(round(targetUnit.convertFromBase(resultBase)), targetUnit);
+        double res = performArithmetic(other, ArithmeticOperation.ADD);
+        return new Quantity<>(round(targetUnit.convertFromBase(res)), targetUnit);
     }
 
-    // UC13: Refactored Subtraction
-    public Quantity<U> subtract(Quantity<U> other) { return subtract(other, this.unit); }
-    public Quantity<U> subtract(Quantity<U> other, U targetUnit) {
-        double resultBase = performArithmetic(other, ArithmeticOperation.SUBTRACT);
-        return new Quantity<>(round(targetUnit.convertFromBase(resultBase)), targetUnit);
+    public Quantity<U> subtract(Quantity<U> other) {
+        double res = performArithmetic(other, ArithmeticOperation.SUBTRACT);
+        return new Quantity<>(round(this.unit.convertFromBase(res)), this.unit);
     }
 
-    // UC13: Refactored Division
     public double divide(Quantity<U> other) {
         return performArithmetic(other, ArithmeticOperation.DIVIDE);
     }
 
-    // UC5: Conversion
     public Quantity<U> convertTo(U targetUnit) {
         double base = this.unit.convertToBase(this.value);
         return new Quantity<>(round(targetUnit.convertFromBase(base)), targetUnit);
