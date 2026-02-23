@@ -1,7 +1,7 @@
 ## UC2 – Feet and Inches Measurement Equality
 
-This use case extends UC1 to support equality checks for both `Feet` and `Inches`.  
-The comparison is performed separately for each unit type. This use case does not compare feet with inches — they are treated independently.
+- This use case extends UC1 to support equality checks for both `Feet` and `Inches`.  
+- The comparison is performed separately for each unit type. This use case does not compare feet with inches — they are treated independently.
 ---
 **Date:** 18 Feb 2026  
 ---
