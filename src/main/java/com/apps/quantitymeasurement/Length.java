@@ -37,8 +37,8 @@ public class Length {
 			return false;
 		}
 
-		double thisBase = this.unit.convertToBaseUnit(this.value);
-		double thatBase = that.unit.convertToBaseUnit(that.value);
+		double thisBase = this.unit.convertToBase(this.value);
+		double thatBase = that.unit.convertToBase(that.value);
 
 		return Double.compare(thisBase, thatBase) == 0;
 	}
@@ -54,15 +54,15 @@ public class Length {
 
 		Length that = (Length) o;
 
-		double thisBase = this.unit.convertToBaseUnit(this.value);
-		double thatBase = that.unit.convertToBaseUnit(that.value);
+		double thisBase = this.unit.convertToBase(this.value);
+		double thatBase = that.unit.convertToBase(that.value);
 
 		return Math.abs(thisBase - thatBase) < EPSILON;
 	}
 
 	@Override
 	public int hashCode() {
-		double baseValue = unit.convertToBaseUnit(value);
+		double baseValue = unit.convertToBase(value);
 		return Double.hashCode(baseValue);
 	}
 
@@ -73,8 +73,8 @@ public class Length {
 			throw new IllegalArgumentException("Target unit cannot be null");
 		}
 
-		double baseValue = this.unit.convertToBaseUnit(this.value);
-		double convertedValue = targetUnit.convertFromBaseUnit(baseValue);
+		double baseValue = this.unit.convertToBase(this.value);
+		double convertedValue = targetUnit.convertFromBase(baseValue);
 
 		return new Length(convertedValue, targetUnit);
 	}
@@ -106,9 +106,9 @@ public class Length {
 
 	private Length addAndConvert(Length that, LengthUnit targetUnit) {
 
-		double sumInBase = this.unit.convertToBaseUnit(this.value) + that.unit.convertToBaseUnit(that.value);
+		double sumInBase = this.unit.convertToBase(this.value) + that.unit.convertToBase(that.value);
 
-		double finalValue = targetUnit.convertFromBaseUnit(sumInBase);
+		double finalValue = targetUnit.convertFromBase(sumInBase);
 
 		return new Length(finalValue, targetUnit);
 	}
