@@ -2,8 +2,8 @@
 
 ## UC1 – Feet Equality
 
-This branch contains the implementation of the **Feet** class.  
-It demonstrates how a single unit of measurement is compared with itself before comparing with other units.
+- This branch contains the implementation of the **Feet** class.  
+- It demonstrates how a single unit of measurement is compared with itself before comparing with other units.
 ---
 **Date:** 17 Feb 2026  
 ---
