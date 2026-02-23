@@ -47,10 +47,10 @@ public enum LengthUnit {
             throw new IllegalArgumentException("Target unit cannot be null");
         }
 
-        // Step 1: Convert to base unit (FEET)
+        //  Convert to base unit (FEET)
         double baseValue = convertToBaseUnit(value);
 
-        // Step 2: Convert base unit to target unit
+        // Convert base unit to target unit
         return targetUnit.convertFromBaseUnit(baseValue);
     }
 }
