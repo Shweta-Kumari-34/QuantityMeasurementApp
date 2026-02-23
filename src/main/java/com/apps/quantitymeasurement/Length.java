@@ -1,31 +1,35 @@
 package com.apps.quantitymeasurement;
 
+import java.util.Objects;
+
 public class Length {
+
+    public enum LengthUnit {
+        INCHES(1.0),           // Base Unit
+        FEET(12.0),
+        YARDS(36.0),
+        CENTIMETERS(0.393700787); // 1 cm = 0.393700787 inches
+
+        private final double toInchesFactor;
+
+        LengthUnit(double factor) {
+            this.toInchesFactor = factor;
+        }
+
+        public double toBase(double value) {
+            return value * toInchesFactor;
+        }
+
+        public double fromBase(double baseValue) {
+            return baseValue / toInchesFactor;
+        }
+    }
 
     private final double value;
     private final LengthUnit unit;
 
-    private static final double EPSILON = 0.00001;
+    private static final double EPSILON = 0.0001;
 
-    // Enum with conversion factors (base unit = INCHES)
-    public enum LengthUnit {
-        FEET(12.0),
-        INCHES(1.0),
-        YARDS(36.0),
-        CENTIMETERS(0.393701);
-
-        private final double conversionFactor;
-
-        LengthUnit(double conversionFactor) {
-            this.conversionFactor = conversionFactor;
-        }
-
-        public double getConversionFactor() {
-            return conversionFactor;
-        }
-    }
-
-    // Constructor with validation
     public Length(double value, LengthUnit unit) {
         if (unit == null) {
             throw new IllegalArgumentException("Unit cannot be null");
@@ -45,39 +49,55 @@ public class Length {
         return unit;
     }
 
-    // Convert to base unit (inches)
-    private double toBaseUnit() {
-        return value * unit.getConversionFactor();
-    }
-
-    // Convert to another unit (instance method)
+    // Convert to another unit
     public Length convertTo(LengthUnit targetUnit) {
         if (targetUnit == null) {
             throw new IllegalArgumentException("Target unit cannot be null");
         }
-
-        double baseValue = this.toBaseUnit();
-        double convertedValue = baseValue / targetUnit.getConversionFactor();
-
-        return new Length(convertedValue, targetUnit);
+        double baseValue = unit.toBase(this.value);
+        double converted = targetUnit.fromBase(baseValue);
+        return new Length(converted, targetUnit);
     }
 
-    // Equality check (with tolerance)
+    // UC6: Add two lengths
+    public Length add(Length other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Second operand cannot be null");
+        }
+
+        // Convert both to base (inches)
+        double base1 = this.unit.toBase(this.value);
+        double base2 = other.unit.toBase(other.value);
+
+        // Add in base
+        double sumBase = base1 + base2;
+
+        // Convert back to first operand's unit
+        double result = this.unit.fromBase(sumBase);
+
+        return new Length(result, this.unit);
+    }
+
+    // Compare for equality with epsilon
     @Override
     public boolean equals(Object obj) {
-
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (!(obj instanceof Length)) return false;
 
         Length other = (Length) obj;
 
-        return Math.abs(this.toBaseUnit() - other.toBaseUnit()) < EPSILON;
+        double base1 = this.unit.toBase(this.value);
+        double base2 = other.unit.toBase(other.value);
+
+        return Math.abs(base1 - base2) < EPSILON;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(unit.toBase(value));
     }
 
     @Override
     public String toString() {
-        return String.format("%.2f %s", value, unit);
+        return "Quantity(" + value + ", " + unit + ")";
     }
-
-	
 }
