@@ -1,48 +1,44 @@
 package com.apps.quantitymeasurement;
 
-import com.apps.quantitymeasurement.*;
-import com.apps.quantitymeasurement.Length.LengthUnit;
-
 public class QuantityMeasurementApp {
 
-    // Demonstrate equality using equals()
+    // Demonstrate equality check
     public static boolean demonstrateLengthEquality(Length length1, Length length2) {
-        boolean result = length1.equals(length2);
-        System.out.println("Equal? (" + result + ")");
-        return result;
+        System.out.println("Equal (" + length1.compare(length2) + ")");
+        return length1.equals(length2);
     }
 
-    // Demonstrate conversion using value parameters
-    public static Length demonstrateLengthConversion(double value,
-                                                     LengthUnit fromUnit,
-                                                     LengthUnit toUnit) {
+    // Demonstrate comparison
+    public static boolean demonstrateLengthComparison(Length length1, Length length2) {
+        System.out.println("Compare (" + length1.compare(length2) + ")");
+        return length1.compare(length2);
+    }
+
+    // Conversion using raw value
+    public static Length demonstrateLengthConversion(double value, LengthUnit fromUnit, LengthUnit toUnit) {
         Length base = new Length(value, fromUnit);
         return base.convertTo(toUnit);
     }
 
-    // Demonstrate conversion using Length object
-    public static Length demonstrateLengthConversion(Length length,
-                                                     LengthUnit toUnit) {
+    // Conversion using Length object
+    public static Length demonstrateLengthConversion(Length length, LengthUnit toUnit) {
         return length.convertTo(toUnit);
     }
 
-    // UC6 – implicit target (first operand unit)
+    // UC6
     public static Length demonstrateLengthAddition(Length l1, Length l2) {
         return l1.add(l2);
     }
 
-    // UC7 – explicit target unit
-    public static Length demonstrateLengthAddition(Length l1,
-                                                   Length l2,
-                                                   LengthUnit targetUnit) {
+    // UC7
+    public static Length demonstrateLengthAddition(Length l1, Length l2, LengthUnit targetUnit) {
         return l1.add(l2, targetUnit);
     }
 
-    // Static API conversion helper
-    public static double convert(double value,
-                                 LengthUnit source,
-                                 LengthUnit target) {
-
+    /**
+     * Static conversion API
+     */
+    public static double convert(double value, LengthUnit source, LengthUnit target) {
         if (source == null || target == null) {
             throw new IllegalArgumentException("Units cannot be null");
         }
@@ -53,52 +49,35 @@ public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
 
-        // Equality checks
-        demonstrateLengthEquality(
-                new Length(1, LengthUnit.FEET),
+        System.out.println("=== Comparison ===");
+        demonstrateLengthComparison(new Length(1, LengthUnit.FEET),
                 new Length(12, LengthUnit.INCHES));
 
-        demonstrateLengthEquality(
-                new Length(1, LengthUnit.YARDS),
+        demonstrateLengthComparison(new Length(1, LengthUnit.YARDS),
                 new Length(36, LengthUnit.INCHES));
 
-        // Conversion examples
+        System.out.println("\n=== Conversion ===");
+        System.out.println(demonstrateLengthConversion(1.0, LengthUnit.FEET, LengthUnit.INCHES));
+        System.out.println(demonstrateLengthConversion(3.0, LengthUnit.YARDS, LengthUnit.FEET));
+        System.out.println(demonstrateLengthConversion(36.0, LengthUnit.INCHES, LengthUnit.YARDS));
+        System.out.println(demonstrateLengthConversion(1.0, LengthUnit.CENTIMETERS, LengthUnit.INCHES));
         System.out.println(demonstrateLengthConversion(
-                1.0, LengthUnit.FEET, LengthUnit.INCHES));
+                new Length(1.0, LengthUnit.FEET), LengthUnit.INCHES));
 
-        System.out.println(demonstrateLengthConversion(
-                3.0, LengthUnit.YARDS, LengthUnit.FEET));
-
-        System.out.println(demonstrateLengthConversion(
-                36.0, LengthUnit.INCHES, LengthUnit.YARDS));
-
-        System.out.println(demonstrateLengthConversion(
-                1.0, LengthUnit.CENTIMETERS, LengthUnit.INCHES));
-
-        System.out.println(demonstrateLengthConversion(
-                new Length(1.0, LengthUnit.FEET),
-                LengthUnit.INCHES));
-
-        // -------------------
-        // UC6 – Implicit target
-        // -------------------
-
-        System.out.println("UC6 Examples");
-
+        System.out.println("\n=== UC6 Addition ===");
         System.out.println(demonstrateLengthAddition(
                 new Length(1.0, LengthUnit.FEET),
                 new Length(12.0, LengthUnit.INCHES)));
 
         System.out.println(demonstrateLengthAddition(
-                new Length(1.0, LengthUnit.YARDS),
-                new Length(3.0, LengthUnit.FEET)));
+                new Length(1.0, LengthUnit.FEET),
+                new Length(2.0, LengthUnit.YARDS)));
 
-        // -------------------
-        // UC7 – Explicit target
-        // -------------------
+        System.out.println(demonstrateLengthAddition(
+                new Length(5.0, LengthUnit.FEET),
+                new Length(-2.0, LengthUnit.FEET)));
 
-        System.out.println("UC7 Examples");
-
+        System.out.println("\n=== UC7 Explicit Target ===");
         System.out.println(demonstrateLengthAddition(
                 new Length(1.0, LengthUnit.FEET),
                 new Length(12.0, LengthUnit.INCHES),
@@ -110,18 +89,32 @@ public class QuantityMeasurementApp {
                 LengthUnit.INCHES));
 
         System.out.println(demonstrateLengthAddition(
-                new Length(1.0, LengthUnit.FEET),
-                new Length(12.0, LengthUnit.INCHES),
+                new Length(1.0, LengthUnit.YARDS),
+                new Length(3.0, LengthUnit.FEET),
                 LengthUnit.YARDS));
 
-        System.out.println(demonstrateLengthAddition(
-                new Length(2.54, LengthUnit.CENTIMETERS),
-                new Length(1.0, LengthUnit.INCHES),
-                LengthUnit.CENTIMETERS));
+        System.out.println("\n=== UC8 Refactored Design ===");
 
-        System.out.println(demonstrateLengthAddition(
-                new Length(5.0, LengthUnit.FEET),
-                new Length(-2.0, LengthUnit.FEET),
-                LengthUnit.INCHES));
+        System.out.println("Convert: "
+                + demonstrateLengthConversion(
+                new Length(1.0, LengthUnit.FEET), LengthUnit.INCHES));
+
+        System.out.println("Add & Convert: "
+                + demonstrateLengthAddition(
+                new Length(1.0, LengthUnit.FEET),
+                new Length(12.0, LengthUnit.INCHES),
+                LengthUnit.FEET));
+
+        Length thirtySixInches = new Length(36.0, LengthUnit.INCHES);
+        Length oneYard = new Length(1.0, LengthUnit.YARDS);
+
+        System.out.println("Equality: "
+                + thirtySixInches.equals(oneYard));
+
+        System.out.println("Unit API Test: "
+                + LengthUnit.FEET.convertToBaseUnit(12.0));
+
+        System.out.println("Unit API Test: "
+                + LengthUnit.INCHES.convertToBaseUnit(12.0));
     }
 }
