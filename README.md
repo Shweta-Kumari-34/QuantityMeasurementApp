@@ -1,12 +1,14 @@
 # QuantityMeasurementApp
 
 ## UC1 – Feet Equality
-
-- This branch contains the implementation of the **Feet** class.  
-- It demonstrates how a single unit of measurement is compared with itself before comparing with other units.
 ---
 **Date:** 17 Feb 2026  
 ---
+
+## Overview
+- This branch contains the implementation of the **Feet** class.  
+- It demonstrates how a single unit of measurement is compared with itself before comparing with other units.
+
 ###  Feature 1 – Define Single Unit (FEET)
 
 Worked on defining a single unit of measurement **[FEET]** and implemented equality logic.
@@ -29,7 +31,6 @@ Worked on defining a single unit of measurement **[FEET]** and implemented equal
 
 ### 📌 Repository Updates
 - Committed and pushed the UC1 implementation to the repository.
----
 - Code Link:
 -[Reference Code](https://github.com/Shweta-Kumari-34/QuantityMeasurementApp/tree/feature/UC1-FeetEquality/src/main/java/com/apps/quantitymeasurement)
 
