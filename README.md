@@ -1,7 +1,7 @@
 #  Quantity Measurement App  
 
 ## UC9 – Weight Measurement Equality, Conversion, and Addition  
-**(Kilogram, Gram, Pound)**  
+***(Kilogram, Gram, Pound)***  
 ---
 **Date:** 18 Feb 2026  
 ---
