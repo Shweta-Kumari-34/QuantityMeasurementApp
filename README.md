@@ -58,16 +58,16 @@ This confirms the system follows the Open-Closed Principle (open for extension, 
 
 ## Supported Functionality
 
-✔ Yard ↔ Yard equality  
-✔ Centimeter ↔ Centimeter equality  
-✔ Yard ↔ Feet equality  
-✔ Yard ↔ Inches equality  
-✔ Centimeter ↔ Inches equality  
-✔ Centimeter ↔ Feet equality  
-✔ Multi-unit transitive comparisons  
-✔ Same-reference equality  
-✔ Null-safe comparison  
-✔ Type-safe unit validation  
+- Yard ↔ Yard equality  
+- Centimeter ↔ Centimeter equality  
+- Yard ↔ Feet equality  
+- Yard ↔ Inches equality  
+- Centimeter ↔ Inches equality  
+- Centimeter ↔ Feet equality  
+- Multi-unit transitive comparisons  
+- Same-reference equality  
+- Null-safe comparison  
+- Type-safe unit validation  
 
 ---
 
