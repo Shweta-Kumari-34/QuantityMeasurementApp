@@ -1,4 +1,4 @@
-# UC13 – Centralized Arithmetic Logic to Enforce DRY in Quantity Operations
+## UC13 – Centralized Arithmetic Logic to Enforce DRY in Quantity Operations
 ---
 **Date:** 23 Feb 2026  
 ---
