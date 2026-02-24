@@ -155,6 +155,6 @@ UC4 prepares the system for:
 
 ---
 ### 📌 Repository Updates
-- Committed and pushed the UC3 implementation to the repository.
+- Committed and pushed the UC-4 implementation to the repository.
 - Code Link:
 -[Reference Code](https://github.com/Shweta-Kumari-34/QuantityMeasurementApp/tree/feature/UC4-YardEquality/src/main/java/com/apps/quantitymeasurement)
