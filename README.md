@@ -1,7 +1,7 @@
 #  Quantity Measurement App  
 
 ## UC9 – Weight Measurement Equality, Conversion, and Addition  
-*(Kilogram, Gram, Pound)*  
+**(Kilogram, Gram, Pound)**  
 ---
 **Date:** 18 Feb 2026  
 ---
@@ -197,6 +197,5 @@ This implementation lays the foundation for future enhancements and domain expan
 ---
 ### 📌 Repository Updates
 - Committed and pushed the UC9 implementation to the repository.
----
 - Code Link:
 -[Reference Code](https://github.com/Shweta-Kumari-34/QuantityMeasurementApp/tree/feature/UC9-Weight-Measurement/src/main/java/com/apps/quantitymeasurement)
