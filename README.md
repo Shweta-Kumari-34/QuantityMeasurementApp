@@ -1,5 +1,5 @@
 # Quantity Measurement App  
-## UC-8 – Refactoring Unit Enum to Standalone with Conversion Responsibility
+## UC-8  Refactoring Unit Enum to Standalone with Conversion Responsibility
 ---
 **Date:** 21 Feb 2026  
 ---
