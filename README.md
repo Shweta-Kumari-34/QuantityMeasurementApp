@@ -1,4 +1,4 @@
-# UC14 – Temperature Measurement with Selective Arithmetic Support & IMeasurable Refactoring
+## UC14 – Temperature Measurement with Selective Arithmetic Support & IMeasurable Refactoring
 **Date:** 23 Feb 2026  
 ---
 
