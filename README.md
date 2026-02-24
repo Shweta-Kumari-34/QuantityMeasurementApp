@@ -132,10 +132,10 @@ These tests validate correctness, symmetry, and robustness.
 
 ## Backward Compatibility
 
-UC1: Feet equality ✔  
-UC2: Feet & Inches equality ✔  
-UC3: Generic Quantity model ✔  
-UC4: Extended units (yards, centimeters) ✔  
+UC1: Feet equality   
+UC2: Feet & Inches equality   
+UC3: Generic Quantity model   
+UC4: Extended units (yards, centimeters)   
 
 No existing functionality is broken in UC5.
 
