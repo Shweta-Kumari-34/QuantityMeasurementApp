@@ -1,6 +1,7 @@
 # Quantity Measurement App
 ## UC3 – Generic Quantity Class (Applying DRY Principle)
-
+---
+**Date:** 19 Feb 2026  
 ---
 
 ## Overview
