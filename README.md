@@ -1,10 +1,12 @@
+# Quantity Measurement App
 ## UC2 – Feet and Inches Measurement Equality
-
-- This use case extends UC1 to support equality checks for both `Feet` and `Inches`.  
-- The comparison is performed separately for each unit type. This use case does not compare feet with inches — they are treated independently.
 ---
 **Date:** 18 Feb 2026  
 ---
+
+## Overview
+- This use case extends UC1 to support equality checks for both `Feet` and `Inches`.  
+- The comparison is performed separately for each unit type. This use case does not compare feet with inches — they are treated independently.
 
 ### Objective
 - Extend equality validation to include `Inches`.
@@ -100,6 +102,5 @@ This would improve scalability and maintainability for future unit conversions.
 
 ### 📌 Repository Updates
 - Committed and pushed the UC2 implementation to the repository.
----
 - Code Link:
 -[Reference Code](https://github.com/Shweta-Kumari-34/QuantityMeasurementApp/tree/feature/UC2-InchEquality/src/main/java/com/apps/quantitymeasurement)
