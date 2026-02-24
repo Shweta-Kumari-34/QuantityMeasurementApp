@@ -1,6 +1,7 @@
 # Quantity Measurement App  
 ## UC6 – Addition of Two Length Units (Same Category)
-
+---
+**Date:** 20 Feb 2026  
 ---
 
 ## Overview
@@ -178,6 +179,5 @@ The Quantity Measurement App is now:
 ---
 ### 📌 Repository Updates
 - Committed and pushed the UC6 implementation to the repository.
----
 - Code Link:
 -[Reference Code](https://github.com/Shweta-Kumari-34/QuantityMeasurementApp/tree/feature/UC6-UnitAddition/src/main/java/com/apps/quantitymeasurement)
