@@ -41,12 +41,12 @@ All conversions are internally handled using a common base unit (inches).
 
 ## Changes Introduced in UC4
 
-### ❌ No Core Logic Modified
+###  No Core Logic Modified
 
 - No changes to `QuantityLength`
 - No changes to `equals()` implementation
 
-### ✅ Updated
+###  Updated
 
 - `LengthUnit` enum extended with:
   - `YARDS`
