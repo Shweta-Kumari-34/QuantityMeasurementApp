@@ -402,7 +402,7 @@ The design now supports categories with **different operational constraints** wi
 
 ---
 
-#  Status
+### 📌 Repository Updates
 
 - TemperatureUnit implemented
 - IMeasurable refactored safely
