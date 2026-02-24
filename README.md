@@ -1,5 +1,5 @@
 # Quantity Measurement App  
-## UC8 – Refactoring Unit Enum to Standalone with Conversion Responsibility
+## UC-8 – Refactoring Unit Enum to Standalone with Conversion Responsibility
 ---
 **Date:** 21 Feb 2026  
 ---
@@ -210,6 +210,6 @@ UC8 serves as the architectural backbone for all future enhancements.
 
 ---
 ### 📌 Repository Updates
-- Committed and pushed the UC8 implementation to the repository.
+- Committed and pushed the UC-8 implementation to the repository.
 - Code Link:
 -[Reference Code](https://github.com/Shweta-Kumari-34/QuantityMeasurementApp/tree/feature/UC8-StandaloneUnit/src/main/java/com/apps/quantitymeasurement)
