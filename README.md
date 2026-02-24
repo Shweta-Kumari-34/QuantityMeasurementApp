@@ -99,7 +99,7 @@ A better design would involve:
 This would improve scalability and maintainability for future unit conversions.
 
 ### 📌 Repository Updates
-- Committed and pushed the UC1 implementation to the repository.
+- Committed and pushed the UC2 implementation to the repository.
 ---
 - Code Link:
 -[Reference Code](https://github.com/Shweta-Kumari-34/QuantityMeasurementApp/tree/feature/UC2-InchEquality/src/main/java/com/apps/quantitymeasurement)
