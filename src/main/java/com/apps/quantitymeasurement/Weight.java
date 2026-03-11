@@ -29,24 +29,24 @@ public class Weight {
 
 	// Convert to base unit (Kilogram)
 	private double toBase() {
-		return unit.convertToBase(value);
+		return unit.toBase(value);
 	}
 
 	public Weight convertTo(WeightUnit targetUnit) {
-		double baseValue = this.unit.convertToBase(this.value);
-		double convertedValue = targetUnit.convertFromBase(baseValue);
+		double baseValue = this.unit.toBase(this.value);
+		double convertedValue = targetUnit.fromBase(baseValue);
 		return new Weight(convertedValue, targetUnit);
 	}
 
 	public Weight add(Weight other, WeightUnit targetUnit) {
 		double sumBase = this.toBase() + other.toBase();
-		double resultValue = targetUnit.convertFromBase(sumBase);
+		double resultValue = targetUnit.fromBase(sumBase);
 		return new Weight(resultValue, targetUnit);
 	}
 
 	public Weight add(Weight other) {
 		double sumBase = this.toBase() + other.toBase();
-		double resultValue = unit.convertFromBase(sumBase);
+		double resultValue = unit.fromBase(sumBase);
 		return new Weight(resultValue, unit);
 	}
 
