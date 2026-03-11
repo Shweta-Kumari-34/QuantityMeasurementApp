@@ -1,26 +1,38 @@
 package com.apps.quantitymeasurement;
 
+import com.apps.quantitymeasurement.controller.QuantityMeasurementController;
+import com.apps.quantitymeasurement.dto.QuantityDTO;
+import com.apps.quantitymeasurement.repository.IQuantityMeasurementRepository;
+import com.apps.quantitymeasurement.repository.QuantityMeasurementCacheRepository;
+import com.apps.quantitymeasurement.service.IQuantityMeasurementService;
+import com.apps.quantitymeasurement.service.QuantityMeasurementServiceImpl;
+
 public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
-        System.out.println("=== Quantity Measurement App  ===");
+        IQuantityMeasurementRepository repository = QuantityMeasurementCacheRepository.getInstance();
+        IQuantityMeasurementService service = new QuantityMeasurementServiceImpl(repository);
+        QuantityMeasurementController controller = new QuantityMeasurementController(service);
 
-        // Length Subtraction
-        Quantity<LengthUnit> tenFeet = new Quantity<>(10.0, LengthUnit.FEET);
-        Quantity<LengthUnit> sixInches = new Quantity<>(6.0, LengthUnit.INCHES);
-        System.out.println("Subtraction (10ft - 6in): " + tenFeet.subtract(sixInches));
+        QuantityDTO oneFoot = new QuantityDTO(1.0, "FEET", "LENGTH");
+        QuantityDTO twelveInches = new QuantityDTO(12.0, "INCHES", "LENGTH");
 
-        // Weight Division (Fixing Line 30 Error)
-        Quantity<WeightUnit> tenKg = new Quantity<>(10.0, WeightUnit.KILOGRAM);
-        Quantity<WeightUnit> fiveKg = new Quantity<>(5.0, WeightUnit.KILOGRAM);
-        
-        // Note: result is a DOUBLE, not a Quantity
-        double ratio = tenKg.divide(fiveKg); 
-        System.out.println("Division Ratio (10kg / 5kg): " + ratio);
+        System.out.println("Length Equality:");
+        System.out.println(controller.performEquality(oneFoot, twelveInches));
 
-        // Volume Zero Check
-        Quantity<VolumeUnit> oneLitre = new Quantity<>(1.0, VolumeUnit.LITRE);
-        Quantity<VolumeUnit> thousandMl = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
-        System.out.println("Zero Result (1L - 1000mL): " + oneLitre.subtract(thousandMl));
+        System.out.println("\nLength Conversion:");
+        System.out.println(controller.performConversion(oneFoot, "INCHES"));
+
+        System.out.println("\nLength Addition:");
+        System.out.println(controller.performAddition(oneFoot, twelveInches));
+
+        System.out.println("\nTemperature Addition Attempt:");
+        QuantityDTO temp1 = new QuantityDTO(0.0, "CELSIUS", "TEMPERATURE");
+        QuantityDTO temp2 = new QuantityDTO(32.0, "FAHRENHEIT", "TEMPERATURE");
+        System.out.println(controller.performAddition(temp1, temp2));
+
+        System.out.println("\nCross Category Prevention:");
+        QuantityDTO oneKg = new QuantityDTO(1.0, "KILOGRAM", "WEIGHT");
+        System.out.println(controller.performEquality(oneFoot, oneKg));
     }
 }
