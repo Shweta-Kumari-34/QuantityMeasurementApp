@@ -37,15 +37,15 @@ public class QuantityWeight {
 
 		QuantityWeight that = (QuantityWeight) obj;
 
-		double thisBase = this.unit.convertToBase(this.value);
-		double thatBase = that.unit.convertToBase(that.value);
+		double thisBase = this.unit.toBase(this.value);
+		double thatBase = that.unit.toBase(that.value);
 
 		return Math.abs(thisBase - thatBase) < EPSILON;
 	}
 
 	@Override
 	public int hashCode() {
-		double baseValue = unit.convertToBase(value);
+		double baseValue = unit.toBase(value);
 		return Objects.hash(Math.round(baseValue / EPSILON));
 	}
 
@@ -53,8 +53,8 @@ public class QuantityWeight {
 		if (targetUnit == null)
 			throw new IllegalArgumentException("Target unit cannot be null");
 
-		double baseValue = unit.convertToBase(value);
-		double convertedValue = targetUnit.convertFromBase(baseValue);
+		double baseValue = unit.toBase(value);
+		double convertedValue = targetUnit.fromBase(baseValue);
 
 		return new QuantityWeight(convertedValue, targetUnit);
 	}
@@ -69,9 +69,9 @@ public class QuantityWeight {
 		if (other == null || targetUnit == null)
 			throw new IllegalArgumentException("Arguments cannot be null");
 
-		double sumBase = this.unit.convertToBase(this.value) + other.unit.convertToBase(other.value);
+		double sumBase = this.unit.toBase(this.value) + other.unit.toBase(other.value);
 
-		double finalValue = targetUnit.convertFromBase(sumBase);
+		double finalValue = targetUnit.fromBase(sumBase);
 
 		return new QuantityWeight(finalValue, targetUnit);
 	}
