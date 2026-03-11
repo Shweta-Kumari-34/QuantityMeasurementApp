@@ -1,32 +1,33 @@
 package com.apps.quantitymeasurement;
 
-/**
- * UC11: VolumeUnit Enum implementing IMeasurable.
- * LITRE is the base unit (1.0).
- */
 public enum VolumeUnit implements IMeasurable {
-    LITRE(1.0),
-    MILLILITRE(0.001),
-    GALLON(3.78541);
+    MILLILITRE(1.0),
+    LITRE(1000.0),
+    GALLON(3785.41);
 
-    private final double factor;
+    private final double conversionFactorToMillilitre;
 
-    VolumeUnit(double factor) {
-        this.factor = factor;
+    VolumeUnit(double conversionFactorToMillilitre) {
+        this.conversionFactorToMillilitre = conversionFactorToMillilitre;
     }
 
     @Override
-    public double convertToBase(double value) {
-        return value * factor;
+    public double toBase(double value) {
+        return value * conversionFactorToMillilitre;
     }
 
     @Override
-    public double convertFromBase(double baseValue) {
-        return baseValue / factor;
+    public double fromBase(double baseValue) {
+        return baseValue / conversionFactorToMillilitre;
     }
 
     @Override
-    public String getCategory() {
+    public String getMeasurementType() {
         return "VOLUME";
+    }
+
+    @Override
+    public String getUnitName() {
+        return name();
     }
 }
