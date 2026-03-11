@@ -37,8 +37,8 @@ public class Length {
 			return false;
 		}
 
-		double thisBase = this.unit.convertToBase(this.value);
-		double thatBase = that.unit.convertToBase(that.value);
+		double thisBase = this.unit.toBase(this.value);
+		double thatBase = that.unit.toBase(that.value);
 
 		return Double.compare(thisBase, thatBase) == 0;
 	}
@@ -54,15 +54,15 @@ public class Length {
 
 		Length that = (Length) o;
 
-		double thisBase = this.unit.convertToBase(this.value);
-		double thatBase = that.unit.convertToBase(that.value);
+		double thisBase = this.unit.toBase(this.value);
+		double thatBase = that.unit.toBase(that.value);
 
 		return Math.abs(thisBase - thatBase) < EPSILON;
 	}
 
 	@Override
 	public int hashCode() {
-		double baseValue = unit.convertToBase(value);
+		double baseValue = unit.toBase(value);
 		return Double.hashCode(baseValue);
 	}
 
@@ -73,8 +73,8 @@ public class Length {
 			throw new IllegalArgumentException("Target unit cannot be null");
 		}
 
-		double baseValue = this.unit.convertToBase(this.value);
-		double convertedValue = targetUnit.convertFromBase(baseValue);
+		double baseValue = this.unit.toBase(this.value);
+		double convertedValue = targetUnit.fromBase(baseValue);
 
 		return new Length(convertedValue, targetUnit);
 	}
@@ -106,9 +106,9 @@ public class Length {
 
 	private Length addAndConvert(Length that, LengthUnit targetUnit) {
 
-		double sumInBase = this.unit.convertToBase(this.value) + that.unit.convertToBase(that.value);
+		double sumInBase = this.unit.toBase(this.value) + that.unit.toBase(that.value);
 
-		double finalValue = targetUnit.convertFromBase(sumInBase);
+		double finalValue = targetUnit.fromBase(sumInBase);
 
 		return new Length(finalValue, targetUnit);
 	}
@@ -130,7 +130,7 @@ public class Length {
 		Length l4 = new Length(36, LengthUnit.INCHES);
 		System.out.println("Are lengths equal? " + l3.equals(l4));
 
-		Length l5 = new Length(100, LengthUnit.CENTIMETER);
+		Length l5 = new Length(100, LengthUnit.CENTIMETERS);
 		Length l6 = new Length(39.3701, LengthUnit.INCHES);
 		System.out.println("Are lengths equal? " + l5.equals(l6));
 
