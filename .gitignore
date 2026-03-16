@@ -7,4 +7,6 @@
 target/
 
 # OS files
+   factorypath
+quantity_measurements_cache.ser
 .DS_Store
