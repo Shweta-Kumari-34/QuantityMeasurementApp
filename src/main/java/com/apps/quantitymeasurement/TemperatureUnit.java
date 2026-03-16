@@ -46,6 +46,16 @@ public enum TemperatureUnit implements IMeasurable {
     }
 
     @Override
+    public IMeasurable getUnitInstance(String unitName) {
+        for (TemperatureUnit unit : TemperatureUnit.values()) {
+            if (unit.getUnitName().equalsIgnoreCase(unitName)) {
+                return unit;
+            }
+        }
+        throw new IllegalArgumentException("Invalid temperature unit: " + unitName);
+    }
+
+    @Override
     public boolean supportsAddition() {
         return false;
     }

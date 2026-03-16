@@ -1,7 +1,8 @@
 package com.apps.quantitymeasurement;
+
 public class Feet {
 
-    private final double value;   // immutable
+    private final double value;
 
     public Feet(double value) {
         this.value = value;
@@ -13,21 +14,10 @@ public class Feet {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
-        // Same reference check
-        if (this == obj) {
-            return true;
-        }
-
-        // Null + type check
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-
-        // Safe cast
         Feet other = (Feet) obj;
-
-        // Floating comparison
         return Double.compare(this.value, other.value) == 0;
     }
 

@@ -30,4 +30,14 @@ public enum VolumeUnit implements IMeasurable {
     public String getUnitName() {
         return name();
     }
+
+    @Override
+    public IMeasurable getUnitInstance(String unitName) {
+        for (VolumeUnit unit : VolumeUnit.values()) {
+            if (unit.getUnitName().equalsIgnoreCase(unitName)) {
+                return unit;
+            }
+        }
+        throw new IllegalArgumentException("Invalid volume unit: " + unitName);
+    }
 }

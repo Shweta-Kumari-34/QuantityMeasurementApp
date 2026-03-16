@@ -32,5 +32,13 @@ public enum LengthUnit implements IMeasurable {
         return name();
     }
 
-	
+    @Override
+    public IMeasurable getUnitInstance(String unitName) {
+        for (LengthUnit unit : LengthUnit.values()) {
+            if (unit.getUnitName().equalsIgnoreCase(unitName)) {
+                return unit;
+            }
+        }
+        throw new IllegalArgumentException("Invalid length unit: " + unitName);
+    }
 }

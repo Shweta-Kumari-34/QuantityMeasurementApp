@@ -10,6 +10,8 @@ public interface IMeasurable {
 
     String getUnitName();
 
+    IMeasurable getUnitInstance(String unitName);
+
     default boolean supportsAddition() {
         return true;
     }
@@ -32,13 +34,13 @@ public interface IMeasurable {
 
         switch (type) {
             case "LENGTH":
-                return LengthUnit.valueOf(unit);
+                return LengthUnit.FEET.getUnitInstance(unit);
             case "WEIGHT":
-                return WeightUnit.valueOf(unit);
+                return WeightUnit.GRAM.getUnitInstance(unit);
             case "VOLUME":
-                return VolumeUnit.valueOf(unit);
+                return VolumeUnit.MILLILITRE.getUnitInstance(unit);
             case "TEMPERATURE":
-                return TemperatureUnit.valueOf(unit);
+                return TemperatureUnit.CELSIUS.getUnitInstance(unit);
             default:
                 throw new IllegalArgumentException("Unsupported measurement type: " + measurementType);
         }

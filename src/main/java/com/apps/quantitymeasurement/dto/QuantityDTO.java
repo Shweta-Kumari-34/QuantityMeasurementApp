@@ -35,6 +35,7 @@ public class QuantityDTO {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof QuantityDTO)) return false;
+
         QuantityDTO other = (QuantityDTO) obj;
         return Double.compare(value, other.value) == 0
                 && Objects.equals(unit, other.unit)

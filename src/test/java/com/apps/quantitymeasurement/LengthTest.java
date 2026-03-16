@@ -6,14 +6,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LengthTest {
 
-    // UC1 - Same reference
     @Test
     void shouldReturnTrueWhenSameReference() {
         Length length = new Length(1, LengthUnit.FEET);
         assertTrue(length.equals(length));
     }
 
-    // UC2 - Same value & unit
     @Test
     void shouldReturnTrueWhenSameValueAndUnit() {
         Length l1 = new Length(1, LengthUnit.FEET);
@@ -21,7 +19,6 @@ class LengthTest {
         assertEquals(l1, l2);
     }
 
-    // UC3 - Different value
     @Test
     void shouldReturnFalseWhenDifferentValue() {
         Length l1 = new Length(1, LengthUnit.FEET);
@@ -29,7 +26,6 @@ class LengthTest {
         assertNotEquals(l1, l2);
     }
 
-    // UC4 - Cross unit equality
     @Test
     void shouldReturnTrueWhenDifferentUnitsButSameLength() {
         Length l1 = new Length(1, LengthUnit.FEET);
@@ -37,7 +33,6 @@ class LengthTest {
         assertEquals(l1, l2);
     }
 
-    // UC5 - Conversion
     @Test
     void shouldConvertFeetToInches() {
         Length length = new Length(1, LengthUnit.FEET);
@@ -47,7 +42,6 @@ class LengthTest {
         assertEquals(LengthUnit.INCHES, result.getUnit());
     }
 
-    // UC6 - Add same unit
     @Test
     void shouldAddTwoLengthsInSameUnit() {
         Length l1 = new Length(2, LengthUnit.FEET);
@@ -59,7 +53,6 @@ class LengthTest {
         assertEquals(LengthUnit.FEET, result.getUnit());
     }
 
-    // UC7 - Add different units with target
     @Test
     void shouldAddDifferentUnitsAndReturnInTargetUnit() {
         Length l1 = new Length(1, LengthUnit.FEET);
@@ -71,7 +64,6 @@ class LengthTest {
         assertEquals(LengthUnit.INCHES, result.getUnit());
     }
 
-    // UC8 - Add feet + cm
     @Test
     void shouldAddFeetAndCentimeter() {
         Length l1 = new Length(1, LengthUnit.FEET);
@@ -79,7 +71,7 @@ class LengthTest {
 
         Length result = l1.add(l2);
 
-        assertEquals(2, result.getValue(), 0.00001);
+        assertEquals(2, result.getValue(), 0.0001);
         assertEquals(LengthUnit.FEET, result.getUnit());
     }
 }

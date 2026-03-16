@@ -45,7 +45,6 @@ public class QuantityMeasurementCacheRepository implements IQuantityMeasurementR
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
             oos.writeObject(cache);
         } catch (IOException ignored) {
-            // For academic use-case, keep repository fail-safe and non-fatal.
         }
     }
 
@@ -56,8 +55,7 @@ public class QuantityMeasurementCacheRepository implements IQuantityMeasurementR
             return new ArrayList<>();
         }
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
-            Object obj = ois.readObject();
-            return (List<QuantityMeasurementEntity>) obj;
+            return (List<QuantityMeasurementEntity>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             return new ArrayList<>();
         }

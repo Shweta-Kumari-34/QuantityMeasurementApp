@@ -146,24 +146,21 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
                 case "LENGTH": {
                     Quantity<LengthUnit> q1 = this.<LengthUnit>toQuantity(operand1);
                     Quantity<LengthUnit> q2 = this.<LengthUnit>toQuantity(operand2);
-                    Quantity<LengthUnit> result =
-                            q1.add(q2, LengthUnit.valueOf(targetUnit.toUpperCase()));
+                    Quantity<LengthUnit> result = q1.add(q2, LengthUnit.valueOf(targetUnit.toUpperCase()));
                     return saveAndReturn(new QuantityMeasurementEntity("ADD", operand1, operand2, toDTO(result)));
                 }
 
                 case "WEIGHT": {
                     Quantity<WeightUnit> q1 = this.<WeightUnit>toQuantity(operand1);
                     Quantity<WeightUnit> q2 = this.<WeightUnit>toQuantity(operand2);
-                    Quantity<WeightUnit> result =
-                            q1.add(q2, WeightUnit.valueOf(targetUnit.toUpperCase()));
+                    Quantity<WeightUnit> result = q1.add(q2, WeightUnit.valueOf(targetUnit.toUpperCase()));
                     return saveAndReturn(new QuantityMeasurementEntity("ADD", operand1, operand2, toDTO(result)));
                 }
 
                 case "VOLUME": {
                     Quantity<VolumeUnit> q1 = this.<VolumeUnit>toQuantity(operand1);
                     Quantity<VolumeUnit> q2 = this.<VolumeUnit>toQuantity(operand2);
-                    Quantity<VolumeUnit> result =
-                            q1.add(q2, VolumeUnit.valueOf(targetUnit.toUpperCase()));
+                    Quantity<VolumeUnit> result = q1.add(q2, VolumeUnit.valueOf(targetUnit.toUpperCase()));
                     return saveAndReturn(new QuantityMeasurementEntity("ADD", operand1, operand2, toDTO(result)));
                 }
 
@@ -200,24 +197,21 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
                 case "LENGTH": {
                     Quantity<LengthUnit> q1 = this.<LengthUnit>toQuantity(operand1);
                     Quantity<LengthUnit> q2 = this.<LengthUnit>toQuantity(operand2);
-                    Quantity<LengthUnit> result =
-                            q1.subtract(q2, LengthUnit.valueOf(targetUnit.toUpperCase()));
+                    Quantity<LengthUnit> result = q1.subtract(q2, LengthUnit.valueOf(targetUnit.toUpperCase()));
                     return saveAndReturn(new QuantityMeasurementEntity("SUBTRACT", operand1, operand2, toDTO(result)));
                 }
 
                 case "WEIGHT": {
                     Quantity<WeightUnit> q1 = this.<WeightUnit>toQuantity(operand1);
                     Quantity<WeightUnit> q2 = this.<WeightUnit>toQuantity(operand2);
-                    Quantity<WeightUnit> result =
-                            q1.subtract(q2, WeightUnit.valueOf(targetUnit.toUpperCase()));
+                    Quantity<WeightUnit> result = q1.subtract(q2, WeightUnit.valueOf(targetUnit.toUpperCase()));
                     return saveAndReturn(new QuantityMeasurementEntity("SUBTRACT", operand1, operand2, toDTO(result)));
                 }
 
                 case "VOLUME": {
                     Quantity<VolumeUnit> q1 = this.<VolumeUnit>toQuantity(operand1);
                     Quantity<VolumeUnit> q2 = this.<VolumeUnit>toQuantity(operand2);
-                    Quantity<VolumeUnit> result =
-                            q1.subtract(q2, VolumeUnit.valueOf(targetUnit.toUpperCase()));
+                    Quantity<VolumeUnit> result = q1.subtract(q2, VolumeUnit.valueOf(targetUnit.toUpperCase()));
                     return saveAndReturn(new QuantityMeasurementEntity("SUBTRACT", operand1, operand2, toDTO(result)));
                 }
 

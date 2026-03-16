@@ -1,8 +1,8 @@
 package com.apps.quantitymeasurement.repository;
 
-import java.util.List;
-
 import com.apps.quantitymeasurement.entity.QuantityMeasurementEntity;
+
+import java.util.List;
 
 public interface IQuantityMeasurementRepository {
 

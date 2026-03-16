@@ -48,8 +48,7 @@ public final class Quantity<U extends IMeasurable> {
         if (!this.unit.getMeasurementType().equals(targetUnit.getMeasurementType())) {
             throw new IllegalArgumentException("Target unit must belong to same measurement type");
         }
-        double baseValue = this.toBase();
-        double converted = targetUnit.fromBase(baseValue);
+        double converted = targetUnit.fromBase(this.toBase());
         return new Quantity<>(converted, targetUnit);
     }
 
@@ -59,8 +58,7 @@ public final class Quantity<U extends IMeasurable> {
             throw new UnsupportedOperationException("Addition not supported for this measurement type");
         }
         double resultBase = this.toBase() + other.toBase();
-        double resultValue = this.unit.fromBase(resultBase);
-        return new Quantity<>(resultValue, this.unit);
+        return new Quantity<>(this.unit.fromBase(resultBase), this.unit);
     }
 
     public Quantity<U> add(Quantity<U> other, U targetUnit) {
@@ -101,10 +99,12 @@ public final class Quantity<U extends IMeasurable> {
         if (!unit.supportsDivision() || !other.unit.supportsDivision()) {
             throw new UnsupportedOperationException("Division not supported for this measurement type");
         }
+
         double divisor = other.toBase();
         if (Math.abs(divisor) < EPSILON) {
             throw new ArithmeticException("Division by zero is not allowed");
         }
+
         return this.toBase() / divisor;
     }
 
@@ -119,7 +119,7 @@ public final class Quantity<U extends IMeasurable> {
             return false;
         }
 
-        return Math.abs(this.toBase() - other.unit.toBase(other.value)) < EPSILON;
+        return Math.abs(this.toBase() - other.getUnit().toBase(other.getValue())) < EPSILON;
     }
 
     @Override
