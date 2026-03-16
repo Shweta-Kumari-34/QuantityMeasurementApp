@@ -1,101 +1,98 @@
 package com.apps.quantitymeasurement.entity;
 
-import com.apps.quantitymeasurement.dto.QuantityDTO;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Timestamp;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * QuantityMeasurementEntityTest
+ *
+ * Tests the persistence entity used in UC16.
+ */
 class QuantityMeasurementEntityTest {
 
     @Test
-    void testQuantityEntity_SingleOperandConstruction() {
-        QuantityDTO input = new QuantityDTO(1.0, "FEET", "LENGTH");
-        QuantityDTO result = new QuantityDTO(12.0, "INCHES", "LENGTH");
+    void testDefaultConstructorAndSetters() {
+        QuantityMeasurementEntity entity = new QuantityMeasurementEntity();
 
-        QuantityMeasurementEntity entity =
-                new QuantityMeasurementEntity("CONVERT", input, result);
+        Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        assertEquals("CONVERT", entity.getOperationType());
-        assertEquals(input, entity.getOperand1());
-        assertNull(entity.getOperand2());
-        assertEquals(result, entity.getResult());
-        assertFalse(entity.hasError());
+        entity.setId(1L);
+        entity.setThisValue(1.0);
+        entity.setThisUnit("FEET");
+        entity.setThisMeasurementType("LENGTH");
+        entity.setThatValue(12.0);
+        entity.setThatUnit("INCHES");
+        entity.setThatMeasurementType("LENGTH");
+        entity.setOperation("COMPARE");
+        entity.setResultString("Equal");
+        entity.setCreatedAt(now);
+
+        assertEquals(1L, entity.getId());
+        assertEquals(1.0, entity.getThisValue());
+        assertEquals("FEET", entity.getThisUnit());
+        assertEquals("LENGTH", entity.getThisMeasurementType());
+        assertEquals(12.0, entity.getThatValue());
+        assertEquals("INCHES", entity.getThatUnit());
+        assertEquals("LENGTH", entity.getThatMeasurementType());
+        assertEquals("COMPARE", entity.getOperation());
+        assertEquals("Equal", entity.getResultString());
+        assertEquals(now, entity.getCreatedAt());
     }
 
     @Test
-    void testQuantityEntity_BinaryOperandConstruction() {
-        QuantityDTO operand1 = new QuantityDTO(1.0, "FEET", "LENGTH");
-        QuantityDTO operand2 = new QuantityDTO(12.0, "INCHES", "LENGTH");
-        QuantityDTO result = new QuantityDTO(2.0, "FEET", "LENGTH");
-
+    void testUnaryStyleConstructor() {
         QuantityMeasurementEntity entity =
-                new QuantityMeasurementEntity("ADD", operand1, operand2, result);
+                new QuantityMeasurementEntity("CONVERT", 1.0, "FEET", "LENGTH",
+                        12.0, "INCHES", "LENGTH");
 
-        assertEquals("ADD", entity.getOperationType());
-        assertEquals(operand1, entity.getOperand1());
-        assertEquals(operand2, entity.getOperand2());
-        assertEquals(result, entity.getResult());
-        assertFalse(entity.hasError());
+        assertEquals("CONVERT", entity.getOperation());
+        assertEquals(1.0, entity.getThisValue());
+        assertEquals("FEET", entity.getThisUnit());
+        assertEquals("LENGTH", entity.getThisMeasurementType());
+        assertEquals(12.0, entity.getThatValue());
+        assertEquals("INCHES", entity.getThatUnit());
+        assertEquals("LENGTH", entity.getThatMeasurementType());
+        assertEquals("12.0", entity.getResultString());
     }
 
     @Test
-    void testQuantityEntity_ErrorConstruction() {
-        QuantityDTO operand1 = new QuantityDTO(0.0, "CELSIUS", "TEMPERATURE");
-        QuantityDTO operand2 = new QuantityDTO(10.0, "CELSIUS", "TEMPERATURE");
-
+    void testBinaryStyleConstructor() {
         QuantityMeasurementEntity entity =
-                new QuantityMeasurementEntity("ADD", operand1, operand2, "Unsupported operation");
+                new QuantityMeasurementEntity("ADD", 1.0, "FEET", "LENGTH",
+                        12.0, "INCHES", "LENGTH", "2.0 FEET");
 
-        assertTrue(entity.hasError());
-        assertEquals("Unsupported operation", entity.getErrorMessage());
-        assertEquals("ADD", entity.getOperationType());
+        assertEquals("ADD", entity.getOperation());
+        assertEquals(1.0, entity.getThisValue());
+        assertEquals("FEET", entity.getThisUnit());
+        assertEquals("LENGTH", entity.getThisMeasurementType());
+        assertEquals(12.0, entity.getThatValue());
+        assertEquals("INCHES", entity.getThatUnit());
+        assertEquals("LENGTH", entity.getThatMeasurementType());
+        assertEquals("2.0 FEET", entity.getResultString());
     }
 
     @Test
-    void testQuantityEntity_ToString_Success() {
-        QuantityDTO input = new QuantityDTO(1.0, "FEET", "LENGTH");
-        QuantityDTO result = new QuantityDTO(12.0, "INCHES", "LENGTH");
-
-        QuantityMeasurementEntity entity =
-                new QuantityMeasurementEntity("CONVERT", input, result);
+    void testToStringShouldContainImportantFields() {
+        QuantityMeasurementEntity entity = new QuantityMeasurementEntity();
+        entity.setId(10L);
+        entity.setThisValue(1.0);
+        entity.setThisUnit("FEET");
+        entity.setThisMeasurementType("LENGTH");
+        entity.setThatValue(12.0);
+        entity.setThatUnit("INCHES");
+        entity.setThatMeasurementType("LENGTH");
+        entity.setOperation("COMPARE");
+        entity.setResultString("Equal");
 
         String output = entity.toString();
 
-        assertTrue(output.contains("Operation=CONVERT"));
-        assertTrue(output.contains("operand1"));
-        assertTrue(output.contains("result"));
-    }
-
-    @Test
-    void testQuantityEntity_ToString_Error() {
-        QuantityDTO input = new QuantityDTO(1.0, "CELSIUS", "TEMPERATURE");
-
-        QuantityMeasurementEntity entity =
-                new QuantityMeasurementEntity("ADD", input, "Temperature addition not supported");
-
-        String output = entity.toString();
-
-        assertTrue(output.contains("ERROR"));
-        assertTrue(output.contains("Temperature addition not supported"));
-    }
-
-    @Test
-    void testEntity_OperationType_Tracking() {
-        QuantityDTO input = new QuantityDTO(1.0, "FEET", "LENGTH");
-        QuantityDTO result = new QuantityDTO(12.0, "INCHES", "LENGTH");
-
-        QuantityMeasurementEntity entity =
-                new QuantityMeasurementEntity("CONVERT", input, result);
-
-        assertEquals("CONVERT", entity.getOperationType());
-    }
-
-    @Test
-    void testEntity_Immutability() {
-        long setterCount = java.util.Arrays.stream(QuantityMeasurementEntity.class.getDeclaredMethods())
-                .filter(method -> method.getName().startsWith("set"))
-                .count();
-
-        assertEquals(0, setterCount);
+        assertTrue(output.contains("id=10"));
+        assertTrue(output.contains("thisValue=1.0"));
+        assertTrue(output.contains("thisUnit='FEET'"));
+        assertTrue(output.contains("operation='COMPARE'"));
+        assertTrue(output.contains("resultString='Equal'"));
     }
 }
