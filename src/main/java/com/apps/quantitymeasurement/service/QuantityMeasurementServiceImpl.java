@@ -1,7 +1,5 @@
 package com.apps.quantitymeasurement.service;
 
-import com.apps.quantitymeasurement.IMeasurable;
-import com.apps.quantitymeasurement.LengthUnit;
 import com.apps.quantitymeasurement.Quantity;
 import com.apps.quantitymeasurement.TemperatureUnit;
 import com.apps.quantitymeasurement.VolumeUnit;
@@ -11,6 +9,8 @@ import com.apps.quantitymeasurement.entity.QuantityMeasurementEntity;
 import com.apps.quantitymeasurement.exception.QuantityMeasurementException;
 import com.apps.quantitymeasurement.model.QuantityModel;
 import com.apps.quantitymeasurement.repository.IQuantityMeasurementRepository;
+import com.apps.quantitymeasurement.unit.IMeasurable;
+import com.apps.quantitymeasurement.unit.LengthUnit;
 
 public class QuantityMeasurementServiceImpl implements IQuantityMeasurementService {
 
