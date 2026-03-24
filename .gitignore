@@ -31,3 +31,20 @@ build/
 
 ### VS Code ###
 .vscode/
+# Ignore everything
+*
+
+# Allow gitignore itself
+!.gitignore
+
+# Allow pom.xml
+!pom.xml
+
+# Allow README
+!README.md
+
+# Allow src folder
+!src/
+
+# Allow everything inside src
+!src/**
