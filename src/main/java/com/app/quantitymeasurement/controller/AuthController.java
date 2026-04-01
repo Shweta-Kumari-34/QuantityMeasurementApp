@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
  * 
  *  
  */
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController // Marks this class as REST controller (returns JSON)
 @RequestMapping("/auth") // Base URL for all endpoints in this class
 public class AuthController {
