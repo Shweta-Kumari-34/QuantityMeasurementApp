@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # QuantityMeasurementApp
 =======
 ## UC18 - Google Authentication and User Management for Quantity Measurement
@@ -166,4 +165,4 @@ User authenticated
 UC18 introduces authentication and user management using Spring Security, JWT, and OAuth2, transforming the Quantity Measurement backend into a **secure, production-ready API service**.
 
 The system now supports authenticated access, protected endpoints, and user-aware operation tracking.
->>>>>>> feature/UC18-GoogleAuthentication
+
