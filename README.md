@@ -1,5 +1,4 @@
 # QuantityMeasurementApp
-=======
 ## UC18 - Google Authentication and User Management for Quantity Measurement
 **Date:** 20 March 2026
 
