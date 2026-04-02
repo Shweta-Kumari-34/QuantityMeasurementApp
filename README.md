@@ -165,8 +165,6 @@ UC18 introduces authentication and user management using Spring Security, JWT, a
 
 The system now supports authenticated access, protected endpoints, and user-aware operation tracking.
 
-=======
-
 ## Main Branch – Consolidated (UC1 → UC14)
 
 ---
