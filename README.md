@@ -1,5 +1,4 @@
 # QuantityMeasurementApp
-<<<<<<< HEAD
 ## UC18 - Google Authentication and User Management for Quantity Measurement
 **Date:** 20 March 2026
 
@@ -402,4 +401,4 @@ From UC1 to UC14, the project demonstrates:
 - Production-level structural maturity  
 
 Main branch represents the final, stable, production-ready system.
->>>>>>> a82b4236ceded36a264beac14da1953ec99a2edd
+
