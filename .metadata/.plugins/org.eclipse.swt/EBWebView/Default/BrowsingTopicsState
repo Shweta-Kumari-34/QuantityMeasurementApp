@@ -1,0 +1,19 @@
+{
+   "epochs": [ {
+      "calculation_time": "13418818941612171",
+      "config_version": 0,
+      "model_version": "0",
+      "padded_top_topics_start_index": 0,
+      "taxonomy_version": 0,
+      "top_topics_and_observing_domains": [  ]
+   }, {
+      "calculation_time": "13419529723427498",
+      "config_version": 0,
+      "model_version": "0",
+      "padded_top_topics_start_index": 0,
+      "taxonomy_version": 0,
+      "top_topics_and_observing_domains": [  ]
+   } ],
+   "hex_encoded_hmac_key": "79EF0F5A98F3F41C6C89B059AC348DC745D92A525B2B5A6B4C4D9871DB61CD34",
+   "next_scheduled_calculation_time": "13420134523427879"
+}
