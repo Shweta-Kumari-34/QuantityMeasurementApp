@@ -1,5 +1,0 @@
-package com.app.userservice.service;
-
-public class AuthServiceImpl {
-
-}
