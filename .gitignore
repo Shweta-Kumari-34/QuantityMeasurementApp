@@ -6,7 +6,16 @@ target/
 .mvn/
 mvnw
 mvnw.cmd
+# Eclipse metadata
+.metadata/
 
+# Eclipse files
+.project
+.classpath
+.settings/
+
+# Build folders
+target/
 # IDE
 .idea/
 .project
